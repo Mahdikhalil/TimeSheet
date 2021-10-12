@@ -81,7 +81,7 @@ public class EmployeServiceImplTest {
         Contrat fetchedContract= (Contrat) contrats.stream().filter(x->x.getReference()==idcont);
 
         if( idc == fetchedContract.getReference()){
-            l.info("Mission found");
+            l.info("contract found");
         }else{
             l.warn("warning check your method");
         }
