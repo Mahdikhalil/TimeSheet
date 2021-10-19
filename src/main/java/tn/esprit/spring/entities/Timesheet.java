@@ -1,6 +1,7 @@
 package tn.esprit.spring.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -28,7 +29,9 @@ public class Timesheet implements Serializable{
 	
 	
 	private boolean isValide;
-	
+
+
+
 
 	public boolean isValide() {
 		return isValide;
