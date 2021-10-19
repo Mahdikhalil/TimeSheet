@@ -23,7 +23,7 @@ public class EntrepriseServiceImplTest {
 
     private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
 
-    @Test
+    @Test(expected = Test.None.class)
     public void testDeleteEntreprise(){
         int id=entrepriseService.ajouterEntreprise(new Entreprise("THE FIVE","Vente"));
 
@@ -35,17 +35,31 @@ public class EntrepriseServiceImplTest {
             l.error("Delete failed!");
     }
 
-    @Test
+    @Test(expected = Test.None.class)
     public void testDepartementEntreprise(){
         int idEntreprise=entrepriseService.ajouterEntreprise(new Entreprise("THE FIVE","Vente"));
         int idDepartement=entrepriseService.ajouterDepartement(new Departement("D1"));
         entrepriseService.affecterDepartementAEntreprise(idDepartement,idEntreprise);
 
         if (entrepriseService.getDepartementAtEntreprise(idDepartement,idEntreprise))
+
             l.info("Department Affected Successfully");
         else
             l.error("Department Not Affected");
     }
 
+
+    @Test
+    public void testAjouterEntreprise() {
+        int entreprise = entrepriseService.ajouterEntreprise(new Entreprise("entre1","finance"));
+        assertNotNull(entreprise);
+        l.info("entreprise ajouté " + entreprise);
+    }
+    @Test
+    public void testAjouterDepartement(){
+        int dept = entrepriseService.ajouterDepartement(new Departement("deptInfo"));
+        assertNotNull(dept);
+        l.info("departement ajouté " + dept);
+    }
 
 }

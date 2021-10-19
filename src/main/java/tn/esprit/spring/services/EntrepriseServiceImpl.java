@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Employe;
+
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EntrepriseRepository;
@@ -37,6 +37,10 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
 				//Rappel : la classe qui contient mappedBy represente le bout Slave
 				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
+
+
+
+
 				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
 				Departement depManagedEntity = deptRepoistory.findById(depId).get();
 				
@@ -47,7 +51,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	public boolean getDepartementAtEntreprise(int depId, int entrepriseId) {
 
 		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
+
         boolean anyMatch = entrepriseManagedEntity.getDepartements().stream().anyMatch(x->x.getId()==depId);
                return anyMatch;
 	}
