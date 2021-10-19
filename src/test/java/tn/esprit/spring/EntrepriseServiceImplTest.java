@@ -1,12 +1,17 @@
 package tn.esprit.spring;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import tn.esprit.spring.repository.DepartementRepository;
-import tn.esprit.spring.repository.EntrepriseRepository;
-import tn.esprit.spring.services.IEntrepriseService;
+import tn.esprit.spring.entities.Departement;
+import tn.esprit.spring.entities.Entreprise;
+import tn.esprit.spring.services.EntrepriseServiceImpl;
+
+import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -14,30 +19,33 @@ public class EntrepriseServiceImplTest {
 
 
     @Autowired
-    IEntrepriseService es ;
-    @Autowired
-    EntrepriseRepository entrepriseRepoistory;
-    @Autowired
-    DepartementRepository deptRepoistory;
+    EntrepriseServiceImpl entrepriseService;
 
-/*
     private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
 
     @Test
-    public void testAjouterEntreprise() {
+    public void testDeleteEntreprise(){
+        int id=entrepriseService.ajouterEntreprise(new Entreprise("THE FIVE","Vente"));
 
-        int entreprise = es.ajouterEntreprise(new Entreprise("entreprise1","entreprise2"));
-        assertNotNull(id);
-        l.info("entreprise ajouté " + entreprise);
+        Entreprise entreprise = entrepriseService.deleteEntrepriseById(id);
 
+        if (entrepriseService.getEntrepriseById(entreprise.getId())==null)
+            l.info("Entreprise deleted successfully");
+        else
+            l.error("Delete failed!");
     }
 
     @Test
-    public void testAjouterDepartement(){
+    public void testDepartementEntreprise(){
+        int idEntreprise=entrepriseService.ajouterEntreprise(new Entreprise("THE FIVE","Vente"));
+        int idDepartement=entrepriseService.ajouterDepartement(new Departement("D1"));
+        entrepriseService.affecterDepartementAEntreprise(idDepartement,idEntreprise);
 
-        int dept = es.ajouterDepartement(new Departement("dept1","dept2"));
-        assertNotNull(id);
-        l.info("departement ajouté " + dept);
+        if (entrepriseService.getDepartementAtEntreprise(idDepartement,idEntreprise))
+            l.info("Department Affected Successfully");
+        else
+            l.error("Department Not Affected");
     }
-    */
+
+
 }

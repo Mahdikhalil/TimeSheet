@@ -44,7 +44,13 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				deptRepoistory.save(depManagedEntity);
 		
 	}
-	
+	public boolean getDepartementAtEntreprise(int depId, int entrepriseId) {
+
+		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+		Departement depManagedEntity = deptRepoistory.findById(depId).get();
+        boolean anyMatch = entrepriseManagedEntity.getDepartements().stream().anyMatch(x->x.getId()==depId);
+               return anyMatch;
+	}
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
 		List<String> depNames = new ArrayList<>();
@@ -56,13 +62,18 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	@Transactional
-	public void deleteEntrepriseById(int entrepriseId) {
-		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());	
+	public Entreprise deleteEntrepriseById(int entrepriseId) {
+	Entreprise entreprise=entrepriseRepoistory.findById(entrepriseId).get();
+		entrepriseRepoistory.delete(entreprise);
+		return entreprise;
+
 	}
 
 	@Transactional
-	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());	
+	public Departement deleteDepartementById(int depId) {
+		Departement departement=deptRepoistory.findById(depId).get();
+		deptRepoistory.delete(departement);
+		return departement;
 	}
 
 
