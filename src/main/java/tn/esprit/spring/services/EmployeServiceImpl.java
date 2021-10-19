@@ -1,35 +1,37 @@
 package tn.esprit.spring.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Employe;
-import tn.esprit.spring.entities.Entreprise;
-import tn.esprit.spring.entities.Mission;
-import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repository.ContratRepository;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.EmployeRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class EmployeServiceImpl implements IEmployeService {
 
-	@Autowired
+
 	EmployeRepository employeRepository;
-	@Autowired
+
 	DepartementRepository deptRepoistory;
-	@Autowired
+
 	ContratRepository contratRepoistory;
-	@Autowired
+
 	TimesheetRepository timesheetRepository;
+	static String exception="return value is null at method AAA";
+
+
+	public EmployeServiceImpl(EmployeRepository employeRepository,DepartementRepository deptRepoistory,ContratRepository contratRepoistory,TimesheetRepository timesheetRepository){
+		this.employeRepository=employeRepository;
+		this.deptRepoistory=deptRepoistory;
+		this.contratRepoistory=contratRepoistory;
+		this.timesheetRepository=timesheetRepository;
+	}
 
 	public int ajouterEmploye(Employe employe) {
 		employeRepository.save(employe);
@@ -37,7 +39,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).get();
+		Employe employe = employeRepository.findById(employeId).orElseThrow(()-> new NullPointerException(exception));
 		employe.setEmail(email);
 		employeRepository.save(employe);
 
@@ -45,8 +47,8 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Departement depManagedEntity = deptRepoistory.findById(depId).orElseThrow(()-> new NullPointerException(exception));
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(()-> new NullPointerException(exception));
 
 		if(depManagedEntity.getEmployes() == null){
 
@@ -63,7 +65,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
-		Departement dep = deptRepoistory.findById(depId).get();
+		Departement dep = deptRepoistory.findById(depId).orElseThrow(()-> new NullPointerException(exception));
 
 		int employeNb = dep.getEmployes().size();
 		for(int index = 0; index < employeNb; index++){
@@ -80,8 +82,8 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public int affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Contrat contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(()-> new NullPointerException(exception));
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(()-> new NullPointerException(exception));
 
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		return contratRepoistory.save(contratManagedEntity).getReference();
@@ -89,12 +91,12 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElseThrow(()-> new NullPointerException(exception));
 		return employeManagedEntity.getPrenom();
 	}
 	public void deleteEmployeById(int employeId)
 	{
-		Employe employe = employeRepository.findById(employeId).get();
+		Employe employe = employeRepository.findById(employeId).orElseThrow(()-> new NullPointerException(exception));
 
 		//Desaffecter l'employe de tous les departements
 		//c'est le bout master qui permet de mettre a jour
@@ -107,7 +109,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void deleteContratById(int contratId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
+		Contrat contratManagedEntity = contratRepoistory.findById(contratId).orElseThrow(()-> new NullPointerException(exception));
 		contratRepoistory.delete(contratManagedEntity);
 
 	}
@@ -143,7 +145,7 @@ public class EmployeServiceImpl implements IEmployeService {
 	
 	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
 			Date dateFin) {
-		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
+		return timesheetRepository.getTimesheetsByMissionAndDate(mission, dateDebut, dateFin);
 	}
 
 	public List<Employe> getAllEmployes() {

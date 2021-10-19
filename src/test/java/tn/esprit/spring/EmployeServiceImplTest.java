@@ -3,47 +3,60 @@ package tn.esprit.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import tn.esprit.spring.entities.*;
-import tn.esprit.spring.repository.*;
+import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Departement;
+import tn.esprit.spring.entities.Employe;
+import tn.esprit.spring.entities.Role;
+import tn.esprit.spring.repository.ContratRepository;
+import tn.esprit.spring.repository.DepartementRepository;
+import tn.esprit.spring.repository.EmployeRepository;
+import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
-import tn.esprit.spring.services.ITimesheetService;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EmployeServiceImplTest {
 
-    @Autowired
-    ITimesheetService tss;
-    @Autowired
-    ContratRepository cr;
-    @Autowired
-    TimesheetRepository tsr;
-    @Autowired
-    DepartementRepository dr;
-    @Autowired
-    EmployeRepository er;
 
-    @Autowired
-    EmployeServiceImpl employeService;
+
+
+
+
+
+
 
     private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
+
+    EmployeRepository employeRepository;
+
+    DepartementRepository deptRepoistory;
+
+    ContratRepository contratRepoistory;
+
+    TimesheetRepository timesheetRepository;
+    EmployeServiceImpl employeService;
+
+
+
+    public EmployeServiceImplTest(EmployeServiceImpl employeService,EmployeRepository employeRepository,DepartementRepository deptRepoistory,ContratRepository contratRepoistory,TimesheetRepository timesheetRepository){
+        this.employeRepository=employeRepository;
+        this.deptRepoistory=deptRepoistory;
+        this.contratRepoistory=contratRepoistory;
+        this.timesheetRepository=timesheetRepository;
+        this.employeService=employeService;
+    }
+
 
     @Test
     public void testAddEmployeen(){
@@ -51,10 +64,11 @@ public class EmployeServiceImplTest {
 
         int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
 
-        assertNotNull(id);
+        Assert.assertNotEquals(id,0);
+
         int nbemp2=employeService.getAllEmployes().size();
 
-        assertFalse(nbemp2==nbemp);
+        Assert.assertNotEquals(nbemp,nbemp2);
         l.info("mission added " + id);
     }
 
@@ -75,9 +89,9 @@ public class EmployeServiceImplTest {
 
         int idcont=employeService.affecterContratAEmploye(idc,id);
 
-        assertNotNull(idcont);
+        Assert.assertNotEquals(idcont,0);
 
-        List<Contrat> contrats=(List<Contrat>)cr.findAll();
+        List<Contrat> contrats=(List<Contrat>)contratRepoistory.findAll();
         Contrat fetchedContract= (Contrat) contrats.stream().filter(x->x.getReference()==idcont);
 
         if( idc == fetchedContract.getReference()){
@@ -89,25 +103,25 @@ public class EmployeServiceImplTest {
     }
 
     @Test
-    public void testAffecterEmpDep() throws ParseException {
+    public void testAffecterEmpDep()  {
 
         int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
-        assertTrue(id!=0);
+        Assert.assertNotEquals(id,0);
         l.info("Employee added");
 
-        int iddep=dr.save(new Departement("IT Departement")).getId();
+        int iddep=deptRepoistory.save(new Departement("IT Departement")).getId();
 
-        assertTrue(iddep!=0);
+        Assert.assertNotEquals(iddep,0);
         l.info("Departement added");
 
 
         employeService.affecterEmployeADepartement(id,iddep);
-        Employe emp=er.findById(id).get();
+        Employe emp=employeRepository.findById(id).orElse(new Employe());
         assertTrue(emp.getDepartements().size()>0);
 
         l.info("employee added to department");
 
-        Departement dep=dr.findById(iddep).get();
+        Departement dep=deptRepoistory.findById(iddep).orElse(new Departement());
         assertTrue(dep.getEmployes().stream().anyMatch(x->x.getId()==id));
 
         l.info("employee added to department");
