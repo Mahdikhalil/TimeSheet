@@ -2,6 +2,8 @@ package tn.esprit.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -61,15 +66,16 @@ public class TimesheetServiceImplTest {
         Mission mission = mr.findById(idm).get();
         tss.affecterMissionADepartement(mission.getId(),departement.getId());
 
-        Mission missionFetched = (Mission) departement.getMissions().stream().filter(mission1 -> mission1.getId() == idm);
+        l.info("Mission affected");
+//        Optional<Mission> missionFetched = departement.getMissions().stream().filter(mission1 -> mission1.getId() == idm).findFirst();
 
-        assertEquals(missionFetched.getId(), idm);
+        assertEquals(departement.getMissions().stream().filter(m -> m.getId() == idm).findFirst().get().getId(), idm);
 
-        if( idm == missionFetched.getId()){
-            l.info("Mission found");
-        }else{
-            l.warn("warning check your method");
-        }
+//        if( missionFetched.get().getId() == idm){
+//            l.info("Mission found");
+//        }else{
+//            l.warn("warning check your method");
+//        }
 
     }
 
@@ -94,4 +100,37 @@ public class TimesheetServiceImplTest {
 
     }
 
+
+
+
+    public void timeTest() throws ParseException {
+
+        long start1 = System.nanoTime();
+        testAddMission();
+        long end1 = System.nanoTime();
+        System.out.println("test add mission take Time in nano seconds: "+ (end1-start1));
+
+        long start2 = System.nanoTime();
+        testAffecterMissionADepartement();
+        long end2 = System.nanoTime();
+        System.out.println("test affect mission to departement Time in nano seconds: "+ (end2-start2));
+
+        long start3 = System.nanoTime();
+        testAjouterTimesheet();
+        long end3 = System.nanoTime();
+        System.out.println("test add Timesheet Time in nano seconds: "+ (end3-start3));
+
+    }
+
+    @Around("execution(* tn.esprit.spring.service.*(..))")
+    public Object profile(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object obj = pjp.proceed();
+        long elapsedTime = System.currentTimeMillis() - start;
+        if(elapsedTime > 0 ){
+            System.out.println(pjp + " took "+ elapsedTime + "MS");
+        }
+        System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
+        return obj;
+    }
 }
