@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import tn.esprit.spring.entities.Contrat;
@@ -29,33 +30,25 @@ import static junit.framework.TestCase.assertTrue;
 public class EmployeServiceImplTest {
 
 
+    public EmployeServiceImplTest() {
+    }
 
+    private static final Logger l = LogManager.getLogger(EmployeServiceImplTest.class);
 
-
-
-
-
-
-    private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
-
+    @Autowired
     EmployeRepository employeRepository;
-
+    @Autowired
     DepartementRepository deptRepoistory;
-
+    @Autowired
     ContratRepository contratRepoistory;
-
+    @Autowired
     TimesheetRepository timesheetRepository;
+    @Autowired
     EmployeServiceImpl employeService;
 
 
 
-    public EmployeServiceImplTest(EmployeServiceImpl employeService,EmployeRepository employeRepository,DepartementRepository deptRepoistory,ContratRepository contratRepoistory,TimesheetRepository timesheetRepository){
-        this.employeRepository=employeRepository;
-        this.deptRepoistory=deptRepoistory;
-        this.contratRepoistory=contratRepoistory;
-        this.timesheetRepository=timesheetRepository;
-        this.employeService=employeService;
-    }
+
 
 
     @Test
@@ -92,7 +85,7 @@ public class EmployeServiceImplTest {
         Assert.assertNotEquals(idcont,0);
 
         List<Contrat> contrats=(List<Contrat>)contratRepoistory.findAll();
-        Contrat fetchedContract= (Contrat) contrats.stream().filter(x->x.getReference()==idcont);
+        Contrat fetchedContract=  contrats.stream().filter(x->x.getReference()==idcont).findFirst().orElse(new Contrat());
 
         if( idc == fetchedContract.getReference()){
             l.info("contract found");
@@ -105,7 +98,8 @@ public class EmployeServiceImplTest {
     @Test
     public void testAffecterEmpDep()  {
 
-        int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
+        Employe employee=new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN);
+        int id = employeService.ajouterEmploye(employee);
         Assert.assertNotEquals(id,0);
         l.info("Employee added");
 
@@ -121,8 +115,9 @@ public class EmployeServiceImplTest {
 
         l.info("employee added to department");
 
-        Departement dep=deptRepoistory.findById(iddep).orElse(new Departement());
-        assertTrue(dep.getEmployes().stream().anyMatch(x->x.getId()==id));
+        Departement dep=deptRepoistory.DepartementById(iddep);
+        boolean flag=dep.getEmployes().stream().anyMatch(x->x.getId()==id);
+        assertTrue(flag);
 
         l.info("employee added to department");
 
