@@ -58,14 +58,11 @@ public class TimesheetServiceImplTest {
         if (idm > 0){
             l.info("mission added");
         }
-
         Departement departement = new Departement("D1");
         dr.save(departement);
         l.info("departement created and added");
-
         Mission mission = mr.findById(idm).get();
         tss.affecterMissionADepartement(mission.getId(),departement.getId());
-
         l.info("Mission affected");
 //        Optional<Mission> missionFetched = departement.getMissions().stream().filter(mission1 -> mission1.getId() == idm).findFirst();
 
