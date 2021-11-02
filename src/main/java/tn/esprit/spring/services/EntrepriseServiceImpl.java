@@ -37,8 +37,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
 				//Rappel : la classe qui contient mappedBy represente le bout Slave
 				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-				Departement depManagedEntity = deptRepoistory.findById(depId).get();
+				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElse(new Entreprise());
+				Departement depManagedEntity = deptRepoistory.findById(depId).orElse(new Departement());
 				
 				depManagedEntity.setEntreprise(entrepriseManagedEntity);
 				deptRepoistory.save(depManagedEntity);
@@ -46,13 +46,12 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 	public boolean getDepartementAtEntreprise(int depId, int entrepriseId) {
 
-		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-        boolean anyMatch = entrepriseManagedEntity.getDepartements().stream().anyMatch(x->x.getId()==depId);
-               return anyMatch;
+		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElse(new Entreprise());
+         return entrepriseManagedEntity.getDepartements().stream().anyMatch(x->x.getId()==depId);
+
 	}
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
-		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElse(new Entreprise());
 		List<String> depNames = new ArrayList<>();
 		for(Departement dep : entrepriseManagedEntity.getDepartements()){
 			depNames.add(dep.getName());
@@ -63,7 +62,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public Entreprise deleteEntrepriseById(int entrepriseId) {
-	Entreprise entreprise=entrepriseRepoistory.findById(entrepriseId).get();
+	Entreprise entreprise=entrepriseRepoistory.findById(entrepriseId).orElse(new Entreprise());
 		entrepriseRepoistory.delete(entreprise);
 		return entreprise;
 
@@ -71,14 +70,14 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public Departement deleteDepartementById(int depId) {
-		Departement departement=deptRepoistory.findById(depId).get();
+		Departement departement=deptRepoistory.findById(depId).orElse(new Departement());
 		deptRepoistory.delete(departement);
 		return departement;
 	}
 
 
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		return entrepriseRepoistory.findById(entrepriseId).get();	
+		return entrepriseRepoistory.findById(entrepriseId).orElse(new Entreprise());
 	}
 
 }

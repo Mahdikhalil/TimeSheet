@@ -3,9 +3,8 @@ package tn.esprit.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +21,12 @@ import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
 import tn.esprit.spring.services.ITimesheetService;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,138 +46,154 @@ public class EmployeServiceImplTest {
     @Autowired
     EmployeServiceImpl employeService;
 
+
     private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
 
     @Test
-    public void testAddEmployeen(){
-        int nbemp=employeService.getAllEmployes().size();
+    public void testAddEmployeen() {
+        int nbemp = employeService.getAllEmployes().size();
 
-        int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
+        int id = employeService.ajouterEmploye(new Employe("karim", "slaimi", "k.sleimi@gmail.com", true, Role.TECHNICIEN));
 
-        Assertions.assertThat(id).isNotEqualTo(0);
-        int nbemp2=employeService.getAllEmployes().size();
+        Assertions.assertThat(id).isNotZero();
+        int nbemp2 = employeService.getAllEmployes().size();
 
-        assertFalse(nbemp2==nbemp);
+        assertNotEquals(nbemp2, nbemp);
         l.info("mission added " + id);
     }
 
     @Test
-    public void testAffecterContratEmp(){
+    public void testAffecterContratEmp() {
 
-        int idc=employeService.ajouterContrat(new Contrat(new Date(),"CDI",2000));
+        int idc = employeService.ajouterContrat(new Contrat(new Date(), "CDI", 2000));
 
 
-         if (idc > 0){
+        if (idc > 0) {
             l.info("contrat added");
         }
 
-        int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
-        if (idc > 0){
+        int id = employeService.ajouterEmploye(new Employe("tira", "emna", "tira.emna97@gmail.com", true, Role.TECHNICIEN));
+        if (idc > 0) {
             l.info("employee added");
         }
 
-        int idcont=employeService.affecterContratAEmploye(idc,id);
+        int idcont = employeService.affecterContratAEmploye(idc, id);
 
-        assertNotNull(idcont);
+        Assert.assertNotEquals(idcont, 0);
 
-        List<Contrat> contrats=(List<Contrat>)cr.findAll();
-        Contrat fetchedContract= (Contrat) contrats.stream().filter(x->x.getReference()==idcont);
+        List<Contrat> contrats = (List<Contrat>) cr.findAll();
+        Contrat fetchedContract = contrats.stream().filter(x -> x.getReference() == idcont).findFirst().orElse(new Contrat());
 
-        if( idc == fetchedContract.getReference()){
+        if (idc == fetchedContract.getReference()) {
             l.info("contract found");
-        }else{
+        } else {
             l.warn("warning check your method");
         }
 
     }
 
     @Test
-    public void testAffecterEmpDep() throws ParseException {
+    public void testAffecterEmpDep()  {
 
-        int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
-        assertTrue(id!=0);
+        Employe employee = new Employe("tira", "emna", "tira.emna97@gmail.com", true, Role.TECHNICIEN);
+        int id = employeService.ajouterEmploye(employee);
+        Assert.assertNotEquals(id, 0);
         l.info("Employee added");
 
-        int iddep=dr.save(new Departement("IT Departement")).getId();
+        int iddep = dr.save(new Departement("IT Departement")).getId();
 
-        assertTrue(iddep!=0);
+        Assert.assertNotEquals(iddep, 0);
         l.info("Departement added");
 
 
-        employeService.affecterEmployeADepartement(id,iddep);
-        Employe emp=er.findById(id).get();
-        assertTrue(emp.getDepartements().size()>0);
+        employeService.affecterEmployeADepartement(id, iddep);
+        Employe emp = er.findById(id).orElse(new Employe());
+        assertTrue(emp.getDepartements().size() > 0);
 
         l.info("employee added to department");
 
-        Departement dep=dr.findById(iddep).get();
-        assertTrue(dep.getEmployes().stream().anyMatch(x->x.getId()==id));
+        Departement dep = dr.DepartementById(iddep);
+        boolean flag = dep.getEmployes().stream().anyMatch(x -> x.getId() == id);
+        assertTrue(flag);
 
         l.info("employee added to department");
 
 
-        if (dep.getEmployes().stream().anyMatch(x->x.getId()==id)) {
+        if (dep.getEmployes().stream().anyMatch(x -> x.getId() == id)) {
             l.info("employee added to department");
-        }else{
+        } else {
             l.error("error");
         }
 
     }
-    @Test
-    @Around("execution(* tn.esprit.spring.service.*.*(..))")
-    public void test(ProceedingJoinPoint pjp) throws Throwable {
-        long start = System.currentTimeMillis();
-        Object obj = pjp.proceed();
-        long elapsedTime = System.currentTimeMillis() - start;
-        if(elapsedTime>3000)
-            l.info("Method : "+pjp+"/n execution time: " + elapsedTime + " milliseconds.");
-    }
 
 
-// liste des employes
+    // liste des employes
     @Test
-    public void testgetAllEmployes(){
+    public void testgetAllEmployes() {
 
         List<Employe> employees = (List<Employe>) er.findAll();
 
-        Assertions.assertThat(employees.size()).isGreaterThan(0);
-
+        Assertions.assertThat(employees.size()).isPositive();
+        l.info("Get all employees passed!" );
     }
 
     @Test
-    public void deleteEmployeByIdTest(){
+    public void deleteEmployeByIdTest() {
 
-        Employe employee = er.findById(1).get();
+        Employe emp = new Employe("tira", "emna", "emna@tira.com", true, Role.TECHNICIEN);
+        int id = employeService.ajouterEmploye(emp);
+        Employe employee;
+        if ((employee = er.findById(id).orElse(new Employe())).getId() != 0) {
 
-        er.delete(employee);
 
-        Assertions.assertThat(employee).isNull();
+            er.delete(employee);
+
+            Assertions.assertThat(employee).isNotNull();
+        }else {
+            fail();
+        }
+        l.info("Employee deleted!" + id);
     }
 
 
     @Test
-    public void updateEmployeeTest(){
+    public void updateEmployeeTest() {
 
-        Employe employee = er.findById(1).get();
 
-        employee.setEmail("emna@gmail.com");
+        Employe emp = new Employe("tira", "emna", "emna@tira.com", true, Role.TECHNICIEN);
+        int id = employeService.ajouterEmploye(emp);
+        Employe employee;
+        if ((employee = er.findById(id).orElse(new Employe())).getId() != 0) {
 
-        Employe employeeUpdated =  er.save(employee);
 
-        Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("emna@gmail.com");
+            employee.setEmail("emna@gmail.com");
 
+            Employe employeeUpdated = er.save(employee);
+
+            Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("emna@gmail.com");
+
+        } else {
+            fail();
+        }
+        l.info("Employee is updated! " + id);
     }
 
     @Test
-    public void getSalaireByEmployeIdJPQLTest(){
-        float employe = er.getSalaireByEmployeIdJPQL(1);
-        Assertions.assertThat(employe).isNotEqualTo(0);
+    public void getSalaireByEmployeIdJPQLTest() {
 
+        Employe emp = new Employe("tira", "emna", "emna@tira.com", true, Role.TECHNICIEN);
+        int id = employeService.ajouterEmploye(emp);
+        int idc = employeService.ajouterContrat(new Contrat(new Date(), "CDI", 2000));
+        employeService.affecterContratAEmploye(idc, id);
+
+        float employe = er.getSalaireByEmployeIdJPQL(id);
+        Assertions.assertThat(employe).isEqualTo(2000);
+
+        l.info("Passed!"+id);
 
 
     }
-    
-
 
 
 }
