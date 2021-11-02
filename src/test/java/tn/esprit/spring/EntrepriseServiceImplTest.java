@@ -35,6 +35,7 @@ public class EntrepriseServiceImplTest {
             l.error("Delete failed!");
     }
 
+
     @Test(expected = Test.None.class)
     public void testDepartementEntreprise(){
         int idEntreprise=entrepriseService.ajouterEntreprise(new Entreprise("THE FIVE","Vente"));
