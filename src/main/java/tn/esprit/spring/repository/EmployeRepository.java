@@ -49,8 +49,8 @@ public interface EmployeRepository extends CrudRepository<Employe, Integer>  {
 			+ "join emp.departements deps "
 			+ "where deps.id=:depId")
     public Double getSalaireMoyenByDepartementId(@Param("depId")int departementId);
-	
-    		
-   
+
+
+
 
 }

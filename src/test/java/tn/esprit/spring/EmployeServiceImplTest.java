@@ -3,24 +3,29 @@ package tn.esprit.spring;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import tn.esprit.spring.entities.*;
-import tn.esprit.spring.repository.*;
+import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Departement;
+import tn.esprit.spring.entities.Employe;
+import tn.esprit.spring.entities.Role;
+import tn.esprit.spring.repository.ContratRepository;
+import tn.esprit.spring.repository.DepartementRepository;
+import tn.esprit.spring.repository.EmployeRepository;
+import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
 import tn.esprit.spring.services.ITimesheetService;
 
-import java.sql.Time;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
@@ -51,7 +56,7 @@ public class EmployeServiceImplTest {
 
         int id = employeService.ajouterEmploye(new Employe("karim","slaimi","k.sleimi@gmail.com",true, Role.TECHNICIEN));
 
-        assertNotNull(id);
+        Assertions.assertThat(id).isNotEqualTo(0);
         int nbemp2=employeService.getAllEmployes().size();
 
         assertFalse(nbemp2==nbemp);
@@ -120,5 +125,65 @@ public class EmployeServiceImplTest {
         }
 
     }
+    @Test
+    @Around("execution(* tn.esprit.spring.service.*.*(..))")
+    public void test(ProceedingJoinPoint pjp) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object obj = pjp.proceed();
+        long elapsedTime = System.currentTimeMillis() - start;
+        if(elapsedTime>3000)
+            l.info("Method : "+pjp+"/n execution time: " + elapsedTime + " milliseconds.");
+    }
+
+
+// liste des employes
+    @Test
+    public void testgetAllEmployes(){
+
+        List<Employe> employees = (List<Employe>) er.findAll();
+
+        Assertions.assertThat(employees.size()).isGreaterThan(0);
+
+    }
+
+    @Test
+    public void deleteEmployeByIdTest(){
+
+        Employe employee = er.findById(1).get();
+
+        er.delete(employee);
+
+        Assertions.assertThat(employee).isNull();
+    }
+
+
+    @Test
+    public void updateEmployeeTest(){
+
+        Employe employee = er.findById(1).get();
+
+        employee.setEmail("emna@gmail.com");
+
+        Employe employeeUpdated =  er.save(employee);
+
+        Assertions.assertThat(employeeUpdated.getEmail()).isEqualTo("emna@gmail.com");
+
+    }
+
+    @Test
+    public void getSalaireByEmployeIdJPQLTest(){
+        float employe = er.getSalaireByEmployeIdJPQL(1);
+        Assertions.assertThat(employe).isNotEqualTo(0);
+
+
+
+    }
+    
+
+
 
 }
+
+
+
+
