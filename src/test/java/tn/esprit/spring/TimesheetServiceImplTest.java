@@ -64,15 +64,7 @@ public class TimesheetServiceImplTest {
         Mission mission = mr.findById(idm).get();
         tss.affecterMissionADepartement(mission.getId(),departement.getId());
         l.info("Mission affected");
-//        Optional<Mission> missionFetched = departement.getMissions().stream().filter(mission1 -> mission1.getId() == idm).findFirst();
-
         assertEquals(departement.getMissions().stream().filter(m -> m.getId() == idm).findFirst().get().getId(), idm);
-
-//        if( missionFetched.get().getId() == idm){
-//            l.info("Mission found");
-//        }else{
-//            l.warn("warning check your method");
-//        }
 
     }
 
