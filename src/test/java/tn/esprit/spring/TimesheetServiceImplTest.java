@@ -24,74 +24,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertNotNull;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class TimesheetServiceImplTest {
-
-    @Autowired
-    ITimesheetService tss;
-    @Autowired
-    MissionRepository mr;
-    @Autowired
-    TimesheetRepository tsr;
-    @Autowired
-    DepartementRepository dr;
-
-    private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
-
-    @Test
-    public void testAddMission(){
-        int id = tss.ajouterMission(new Mission("M1","D1"));
-        assertNotNull(id);
-        l.info("mission added " + id);
-    }
-
-    @Test
-    public void testAffecterMissionADepartement(){
-
-        int idm = tss.ajouterMission(new Mission("M1",null));
-        if (idm > 0){
-            l.info("mission added");
-        }
-
-        Departement departement = new Departement("D1");
-        dr.save(departement);
-        l.info("departement created and added");
-
-        Mission mission = mr.findById(idm).get();
-        tss.affecterMissionADepartement(mission.getId(),departement.getId());
-
-        Mission missionFetched = (Mission) departement.getMissions().stream().filter(mission1 -> mission1.getId() == idm);
-
-        assertEquals(missionFetched.getId(), idm);
-
-        if( idm == missionFetched.getId()){
-            l.info("Mission found");
-        }else{
-            l.warn("warning check your method");
-        }
-
-    }
-
-    @Test
-    public void testAjouterTimesheet() throws ParseException {
-
-        int idm = tss.ajouterMission(new Mission("M1","D1"));
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = dateFormat.parse("2015-03-23");
-        Date date2 = dateFormat.parse("2015-03-23");
-
-        tss.ajouterTimesheet(idm,0,date1,date2);
-
-        l.info("timesheet parsed");
-
-        Timesheet timesheet = (Timesheet) tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2);
-        if (timesheet.isValide()) {
-            l.info("TimeSheet Added");
-        }else{
-            l.error("check your code");
-        }
-
-    }
 
 }
