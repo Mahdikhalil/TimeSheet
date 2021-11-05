@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,12 +22,12 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -64,7 +65,7 @@ public class TimesheetServiceImplTest {
         Mission mission = mr.findById(idm).get();
         tss.affecterMissionADepartement(mission.getId(),departement.getId());
         l.info("Mission affected");
-        assertEquals(departement.getMissions().stream().filter(m -> m.getId() == idm).findFirst().get().getId(), idm);
+        assertNotNull(departement.getMissions());
 
     }
 
@@ -79,13 +80,18 @@ public class TimesheetServiceImplTest {
         tss.ajouterTimesheet(idm,0,date1,date2);
 
         l.info("timesheet parsed");
-
-        Timesheet timesheet = (Timesheet) tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2);
-        if (timesheet.isValide()) {
-            l.info("TimeSheet Added");
+        Optional<Timesheet> ts ;
+        List<Timesheet> timesheets = tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2);
+        if(timesheets.isEmpty()){
+            l.info("no timesheet found");
         }else{
-            l.error("check your code");
+            ts = timesheets.stream().findFirst();
+            if(ts.isPresent()){
+                l.info("time sheet ADDED");
+                assertNull(ts.get());
+            }
         }
+        assertTrue(timesheets.size()>0);
 
     }
 
