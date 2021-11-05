@@ -143,7 +143,8 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
 			Date dateFin) {
-		return null;
+		return timesheetRepository.getTimesheetsByMissionAndDate( mission, dateDebut, dateFin);
+
 	}
 
 	public List<Employe> getAllEmployes() {

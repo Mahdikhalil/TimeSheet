@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,4 +104,16 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		return timesheetRepository.getAllEmployeByMission(missionId);
 	}
 
+
+	@Around("execution(* tn.esprit.spring.service.*(..))")
+	public Object profile(ProceedingJoinPoint pjp) throws Throwable {
+		long start = System.currentTimeMillis();
+		Object obj = pjp.proceed();
+		long elapsedTime = System.currentTimeMillis() - start;
+		if(elapsedTime > 0 ){
+			System.out.println(pjp + " took "+ elapsedTime + "MS");
+		}
+		System.out.println("Method execution time: " + elapsedTime + " milliseconds.");
+		return obj;
+	}
 }
