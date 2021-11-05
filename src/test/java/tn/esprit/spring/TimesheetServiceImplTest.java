@@ -10,12 +10,11 @@ import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import tn.esprit.spring.entities.Departement;
-import tn.esprit.spring.entities.Mission;
-import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repository.DepartementRepository;
 import tn.esprit.spring.repository.MissionRepository;
 import tn.esprit.spring.repository.TimesheetRepository;
+import tn.esprit.spring.services.EmployeServiceImpl;
 import tn.esprit.spring.services.ITimesheetService;
 
 import java.sql.Time;
@@ -42,6 +41,8 @@ public class TimesheetServiceImplTest {
     TimesheetRepository tsr;
     @Autowired
     DepartementRepository dr;
+    @Autowired
+    EmployeServiceImpl esi;
 
     private static final Logger l = LogManager.getLogger(TimesheetServiceImplTest.class);
 
@@ -76,8 +77,8 @@ public class TimesheetServiceImplTest {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = dateFormat.parse("2015-03-23");
         Date date2 = dateFormat.parse("2015-03-23");
-
-        tss.ajouterTimesheet(idm,0,date1,date2);
+        Employe employe= new Employe("mahdi","khalil","mahdi@mm.com",true, Role.INGENIEUR);
+        tss.ajouterTimesheet(idm,esi.ajouterEmploye(employe),date1,date2);
 
         l.info("timesheet parsed");
         Optional<Timesheet> ts ;
@@ -88,14 +89,11 @@ public class TimesheetServiceImplTest {
             ts = timesheets.stream().findFirst();
             if(ts.isPresent()){
                 l.info("time sheet ADDED");
-                assertNull(ts.get());
+                assertNotNull(ts.get());
             }
         }
         assertTrue(timesheets.size()>0);
-
     }
-
-
 
 
     public void timeTest() throws ParseException {
