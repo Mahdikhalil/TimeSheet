@@ -517,7 +517,9 @@ Caused by: java.net.ConnectException: Connection refused: no further information
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
 2021-10-13 01:03:05.441  WARN 10620 --- [main] o.s.w.c.s.GenericWebApplicationContext   : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.exception.JDBCConnectionException: Unable to open JDBC Connection for DDL execution
-2021-10-13 01:03:05.462  INFO 10620 --- [main] ConditionEvaluationReportLoggingListener :
+
+2021-10-13 01:03:05.462  INFO 10620 --- [main] ConditionEvaluationReportLoggingListener : 
+
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
 2021-10-13 01:03:05.471 ERROR 10620 --- [main] o.s.boot.SpringApplication               : Application run failed
@@ -819,10 +821,12 @@ Caused by: java.net.BindException: Address already in use: bind
 	... 14 common frames omitted
 
 2021-10-27 03:01:00.794  INFO 4628 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2021-10-27 03:01:00.825  INFO 4628 --- [main] ConditionEvaluationReportLoggingListener :
+
+2021-10-27 03:01:00.825  INFO 4628 --- [main] ConditionEvaluationReportLoggingListener : 
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2021-10-27 03:01:00.825 ERROR 4628 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   :
+2021-10-27 03:01:00.825 ERROR 4628 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
 
 ***************************
 APPLICATION FAILED TO START
@@ -896,10 +900,12 @@ Caused by: java.net.BindException: Address already in use: bind
 	... 14 common frames omitted
 
 2021-10-27 03:01:17.990  INFO 4740 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2021-10-27 03:01:18.005  INFO 4740 --- [main] ConditionEvaluationReportLoggingListener :
+
+2021-10-27 03:01:18.005  INFO 4740 --- [main] ConditionEvaluationReportLoggingListener : 
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2021-10-27 03:01:18.005 ERROR 4740 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   :
+2021-10-27 03:01:18.005 ERROR 4740 --- [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
 
 ***************************
 APPLICATION FAILED TO START
@@ -987,4 +993,6 @@ Verify the connector's configuration, identify and stop any process that's liste
 2021-10-27 03:04:46.468  INFO 3276 --- [Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
 2021-10-27 03:04:46.468  INFO 3276 --- [Thread-1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2021-10-27 03:04:46.468  INFO 3276 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+
 2021-10-27 03:04:46.468  INFO 3276 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
