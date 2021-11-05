@@ -3,6 +3,7 @@ package tn.esprit.spring.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,12 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).get();
+		Optional<Employe> oe = employeRepository.findById(employeId);
+		Employe employe = new Employe();
+		if (oe.isPresent()){
+			 employe = oe.get();
+		}
+
 		employe.setEmail(email);
 		employeRepository.save(employe);
 
@@ -45,8 +51,14 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Departement depManagedEntity = new Departement();
+		Optional<Departement> od = deptRepoistory.findById(depId);
+		Employe employe = new Employe();
+		Optional<Employe> oe = employeRepository.findById(employeId);
+		if(od.isPresent()){
+			depManagedEntity = od.get();
+		}
+		Employe employeManagedEntity = oe.get();
 
 		if(depManagedEntity.getEmployes() == null){
 
@@ -63,8 +75,11 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
-		Departement dep = deptRepoistory.findById(depId).get();
-
+		Departement dep = new Departement();
+		Optional<Departement> od = deptRepoistory.findById(depId);
+		if(od.isPresent()){
+			dep = od.get();
+		}
 		int employeNb = dep.getEmployes().size();
 		for(int index = 0; index < employeNb; index++){
 			if(dep.getEmployes().get(index).getId() == employeId){
@@ -80,9 +95,16 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
-
+		Contrat contratManagedEntity = new Contrat();
+		Employe employeManagedEntity = new Employe();
+		Optional<Contrat> oc = contratRepoistory.findById(contratId);
+		Optional<Employe> oe = employeRepository.findById(employeId);
+		if (oc.isPresent()){
+			contratManagedEntity = oc.get();
+		}
+		if(oe.isPresent()){
+			employeManagedEntity = oe.get();
+		}
 		contratManagedEntity.setEmploye(employeManagedEntity);
 		contratRepoistory.save(contratManagedEntity);
 		
