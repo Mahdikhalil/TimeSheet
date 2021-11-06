@@ -24,7 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertNotNull;
@@ -59,15 +61,21 @@ public class TimesheetServiceImplTest {
         int idm = tss.ajouterMission(new Mission("M1",null));
         if (idm > 0){
             l.info("mission added");
+        }else{
+            l.error("adding mission failed");
         }
         Departement departement = new Departement("D1");
         dr.save(departement);
         l.info("departement created and added");
         Mission mission = mr.findById(idm).get();
+        l.info("mission found");
         tss.affecterMissionADepartement(mission.getId(),departement.getId());
         l.info("Mission affected");
-        assertNotNull(departement.getMissions());
-
+        List<Departement> ld = null ;
+        ld =
+                StreamSupport.stream(dr.findAll().spliterator(), false)
+                        .collect(Collectors.toList());
+        assertNotNull(ld);
     }
 
     @Test
@@ -81,18 +89,7 @@ public class TimesheetServiceImplTest {
         tss.ajouterTimesheet(idm,esi.ajouterEmploye(employe),date1,date2);
 
         l.info("timesheet parsed");
-        Optional<Timesheet> ts ;
-        List<Timesheet> timesheets = tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2);
-        if(timesheets.isEmpty()){
-            l.info("no timesheet found");
-        }else{
-            ts = timesheets.stream().findFirst();
-            if(ts.isPresent()){
-                l.info("time sheet ADDED");
-                assertNotNull(ts.get());
-            }
-        }
-        assertTrue(timesheets.size()>0);
+        assertNotNull(tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2));
     }
 
 
