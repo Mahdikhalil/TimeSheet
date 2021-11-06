@@ -20,6 +20,7 @@ import tn.esprit.spring.services.ITimesheetService;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class TimesheetServiceImplTest {
         l.info("mission added " + id);
     }
 
-    @Test
+  /*  @Test
     public void testAffecterMissionADepartement(){
 
         int idm = tss.ajouterMission(new Mission("M1",null));
@@ -68,9 +69,21 @@ public class TimesheetServiceImplTest {
         l.info("Mission affected");
         assertNotNull(departement.getMissions());
 
+    }*/
+    @Test
+    public void testGetAllEmployeByMission(){
+        int id = tss.ajouterMission(new Mission("M1","D1"));
+        assertNotNull(id);
+        l.info("mission added " + id);
+        List<Employe> le = null;
+
+        if(id > 0){
+           le = tss.getAllEmployeByMission(id);
+        }
+        assertNotNull(le);
     }
 
-    @Test
+  /*  @Test
     public void testAjouterTimesheet() throws ParseException {
 
         int idm = tss.ajouterMission(new Mission("M1","D1"));
@@ -93,10 +106,11 @@ public class TimesheetServiceImplTest {
             }
         }
         assertTrue(timesheets.size()>0);
-    }
+    }*/
 
 
-    public void timeTest() throws ParseException {
+
+   /* public void timeTest() throws ParseException {
 
         long start1 = System.nanoTime();
         testAddMission();
@@ -104,16 +118,16 @@ public class TimesheetServiceImplTest {
         System.out.println("test add mission take Time in nano seconds: "+ (end1-start1));
 
         long start2 = System.nanoTime();
-        testAffecterMissionADepartement();
+      //  testAffecterMissionADepartement();
         long end2 = System.nanoTime();
         System.out.println("test affect mission to departement Time in nano seconds: "+ (end2-start2));
 
         long start3 = System.nanoTime();
-        testAjouterTimesheet();
+       // testAjouterTimesheet();
         long end3 = System.nanoTime();
         System.out.println("test add Timesheet Time in nano seconds: "+ (end3-start3));
 
-    }
+    }*/
 
     @Around("execution(* tn.esprit.spring.service.*(..))")
     public Object profile(ProceedingJoinPoint pjp) throws Throwable {
