@@ -70,6 +70,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 
 
+
 	@Transactional
 	public Entreprise deleteEntrepriseById(int entrepriseId) {
 	Entreprise entreprise=entrepriseRepoistory.findById(entrepriseId).get();
