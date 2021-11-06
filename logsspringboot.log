@@ -1025,3 +1025,61 @@ Verify the connector's configuration, identify and stop any process that's liste
 2021-11-06 12:51:29.142  INFO 18904 --- [Thread-1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2021-11-06 12:51:29.145  INFO 18904 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2021-11-06 12:51:29.154  INFO 18904 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-11-06 15:25:26.051  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : Starting TimesheetServiceImplTest on DESKTOP-2K81BK0 with PID 3012 (started by Mahdi in C:\Users\Mahdi\Desktop\esprit\5eme\devops\TimesheetProject)
+2021-11-06 15:25:26.053  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : No active profile set, falling back to default profiles: default
+2021-11-06 15:25:27.603  INFO 3012 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2021-11-06 15:25:27.730  INFO 3012 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 101ms. Found 6 repository interfaces.
+2021-11-06 15:25:28.627  INFO 3012 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$73926eb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-11-06 15:25:29.103  INFO 3012 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-11-06 15:25:29.366  INFO 3012 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-11-06 15:25:29.526  INFO 3012 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2021-11-06 15:25:29.657  INFO 3012 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.9.Final}
+2021-11-06 15:25:29.659  INFO 3012 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2021-11-06 15:25:30.469  INFO 3012 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2021-11-06 15:25:31.001  INFO 3012 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2021-11-06 15:25:32.501  INFO 3012 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-11-06 15:25:32.921  INFO 3012 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2021-11-06 15:25:34.050  INFO 3012 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-11-06 15:25:34.126  WARN 3012 --- [main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-11-06 15:25:34.611  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : Started TimesheetServiceImplTest in 9.459 seconds (JVM running for 12.614)
+2021-11-06 15:25:34.968  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : mission added 143
+2021-11-06 15:25:35.041  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : timesheet parsed
+2021-11-06 15:25:35.133  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : mission added
+2021-11-06 15:25:35.139  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : departement created and added
+2021-11-06 15:25:35.144  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : mission found
+2021-11-06 15:25:35.165  INFO 3012 --- [main] t.e.spring.TimesheetServiceImplTest      : Mission affected
+2021-11-06 15:25:35.481  INFO 3012 --- [Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-11-06 15:25:35.484  INFO 3012 --- [Thread-1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-11-06 15:25:35.487  INFO 3012 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-11-06 15:25:35.499  INFO 3012 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-11-06 15:25:58.221  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : Starting TimesheetServiceImplTest on DESKTOP-2K81BK0 with PID 22720 (started by Mahdi in C:\Users\Mahdi\Desktop\esprit\5eme\devops\TimesheetProject)
+2021-11-06 15:25:58.223  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : No active profile set, falling back to default profiles: default
+2021-11-06 15:25:59.001  INFO 22720 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2021-11-06 15:25:59.127  INFO 22720 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 113ms. Found 6 repository interfaces.
+2021-11-06 15:25:59.608  INFO 22720 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$448370a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-11-06 15:25:59.848  INFO 22720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-11-06 15:26:00.026  INFO 22720 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-11-06 15:26:00.109  INFO 22720 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2021-11-06 15:26:00.195  INFO 22720 --- [main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.3.9.Final}
+2021-11-06 15:26:00.197  INFO 22720 --- [main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2021-11-06 15:26:00.358  INFO 22720 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+2021-11-06 15:26:00.863  INFO 22720 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2021-11-06 15:26:01.913  INFO 22720 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-11-06 15:26:02.271  INFO 22720 --- [main] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
+2021-11-06 15:26:03.387  INFO 22720 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-11-06 15:26:03.456  WARN 22720 --- [main] aWebConfiguration$JpaWebMvcConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-11-06 15:26:03.806  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : Started TimesheetServiceImplTest in 5.993 seconds (JVM running for 7.134)
+2021-11-06 15:26:03.979  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : mission added 146
+2021-11-06 15:26:04.037  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : timesheet parsed
+2021-11-06 15:26:04.133  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : mission added
+2021-11-06 15:26:04.139  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : departement created and added
+2021-11-06 15:26:04.143  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : mission found
+2021-11-06 15:26:04.163  INFO 22720 --- [main] t.e.spring.TimesheetServiceImplTest      : Mission affected
+2021-11-06 15:26:04.428  INFO 22720 --- [Thread-1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-11-06 15:26:04.430  INFO 22720 --- [Thread-1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-11-06 15:26:04.434  INFO 22720 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-11-06 15:26:04.444  INFO 22720 --- [Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
