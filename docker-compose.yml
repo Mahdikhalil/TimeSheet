@@ -1,0 +1,38 @@
+version: '3.3'
+
+services:
+  mysql:
+    container_name: mysqldb
+    image: mysql:latest
+    #    platform: linux/amd64 # uncomment this if using Apple silicon
+    hostname: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: timeSheetDevOps
+
+    ports:
+      - "3309:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - mysql:db
+    ports:
+      - "3308:80"
+
+  timesheet:
+    image: mahdikhalil/timesheet
+    container_name: timesheet
+    build: ./
+    restart: on-failure
+    ports:
+      - "8080:8081"
+    environment:
+      spring.datasource.url: jdbc:mysql://mysql:3306/timeSheetDevOps?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      spring.datasource.username: root
+      spring.datasource.password: root
+      #- DEFAULT_PATH=<Target path in windows>
+    depends_on:
+      - mysql
+      - phpmyadmin
