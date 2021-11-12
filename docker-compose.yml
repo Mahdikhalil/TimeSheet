@@ -22,7 +22,7 @@ services:
       - "3308:80"
 
   timesheet:
-    image: mahdikhalil/timesheet
+    image: mahdidoc/timesheet
     container_name: timesheet
     build: ./
     restart: on-failure
