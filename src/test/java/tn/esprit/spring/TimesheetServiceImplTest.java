@@ -135,7 +135,7 @@ public class TimesheetServiceImplTest {
         if(mission.isPresent()){
             mission.get().setName("missionAfter");
             mr.save(mission.get());
-            l.info("mission updated");
+            l.debug("mission updated");
             assertNotSame(mission.get().getName(),"MissionBefore");
         }
 
