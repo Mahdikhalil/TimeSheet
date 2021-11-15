@@ -17,6 +17,7 @@ import tn.esprit.spring.repository.TimesheetRepository;
 import tn.esprit.spring.services.EmployeServiceImpl;
 import tn.esprit.spring.services.ITimesheetService;
 
+import javax.swing.text.html.Option;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,15 +68,18 @@ public class TimesheetServiceImplTest {
         Departement departement = new Departement("D1");
         dr.save(departement);
         l.info("departement created and added");
-        Mission mission = mr.findById(idm).get();
-        l.info("mission found");
-        tss.affecterMissionADepartement(mission.getId(),departement.getId());
-        l.info("Mission affected");
-        List<Departement> ld = null ;
-        ld =
-                StreamSupport.stream(dr.findAll().spliterator(), false)
-                        .collect(Collectors.toList());
-        assertNotNull(ld);
+        Optional<Mission> mission = mr.findById(idm);
+        if(mission.isPresent()){
+            l.info("mission found");
+            tss.affecterMissionADepartement(mission.get().getId(),departement.getId());
+            l.info("Mission affected");
+            List<Departement> ld = null ;
+            ld =
+                    StreamSupport.stream(dr.findAll().spliterator(), false)
+                            .collect(Collectors.toList());
+            assertNotNull(ld);
+        }
+
     }
 
     @Test
@@ -90,7 +94,9 @@ public class TimesheetServiceImplTest {
 
         l.info("timesheet parsed");
         l.info("webhook");
-        assertNotNull(tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2));
+        if(mr.findById(idm).isPresent()){
+            assertNotNull(tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2));
+        }
     }
 
     @Test
@@ -125,11 +131,14 @@ public class TimesheetServiceImplTest {
         int id = tss.ajouterMission(new Mission("MissionBefore","D1"));
         assertNotNull(id);
         l.info("mission added " + id);
-        Mission mission = mr.findById(id).get();
-        mission.setName("missionAfter");
-        mr.save(mission);
-        l.info("mission updated");
-        assertNotSame(mission.getName(),"MissionBefore");
+        Optional<Mission> mission = mr.findById(id);
+        if(mission.isPresent()){
+            mission.get().setName("missionAfter");
+            mr.save(mission.get());
+            l.info("mission updated");
+            assertNotSame(mission.get().getName(),"MissionBefore");
+        }
+
     }
 
 
