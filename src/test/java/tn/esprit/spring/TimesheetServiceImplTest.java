@@ -93,6 +93,50 @@ public class TimesheetServiceImplTest {
         assertNotNull(tsr.getTimesheetsByMissionAndDate(mr.findById(idm).get(),date1,date2));
     }
 
+    @Test
+    public void testDeleteTimesheet() throws ParseException {
+
+        int idm = tss.ajouterMission(new Mission("M1","D1"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = dateFormat.parse("2015-03-23");
+        Date date2 = dateFormat.parse("2015-03-23");
+        Employe employe= new Employe("mohamed","khalil","med@mm.com",true, Role.INGENIEUR);
+        tss.ajouterTimesheet(idm,esi.ajouterEmploye(employe),date1,date2);
+        Timesheet ts = tsr.findBytimesheetPK(new TimesheetPK(idm,employe.getId(),date1,date2));
+        assertNotNull(ts);
+        l.info("ts added and found ");
+        tsr.delete(ts);
+        ts = tsr.findBytimesheetPK(new TimesheetPK(idm,employe.getId(),date1,date2));
+        l.info("ts deleted");
+        assertNull(ts);
+    }
+
+    @Test
+    public void testGetAllMission(){
+        List<Mission> missions =
+                StreamSupport.stream(mr.findAll().spliterator(), false)
+                        .collect(Collectors.toList());
+        l.info("get all missions");
+        assertTrue(missions.size()>0);
+    }
+
+    @Test
+    public void testUpdateMission(){
+        int id = tss.ajouterMission(new Mission("MissionBefore","D1"));
+        assertNotNull(id);
+        l.info("mission added " + id);
+        Mission mission = mr.findById(id).get();
+        mission.setName("missionAfter");
+        mr.save(mission);
+        l.info("mission updated");
+        assertNotSame(mission.getName(),"MissionBefore");
+    }
+
+
+
+
+
+
 
     public void timeTest() throws ParseException {
 
