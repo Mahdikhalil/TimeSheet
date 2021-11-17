@@ -124,7 +124,8 @@ public class TimesheetServiceImpl implements ITimesheetService {
 		if(elapsedTime > 0){
 			l.debug(pjp + " took "+ elapsedTime + "MS");
 		}
-		l.info("Method execution time: " + elapsedTime + " milliseconds.");
+
+		l.debug("Method execution time: " + elapsedTime + " milliseconds.");
 		return obj;
 	}
 }
