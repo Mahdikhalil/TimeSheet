@@ -53,7 +53,7 @@ public class TimesheetServiceImplTest {
     public void testAddMission(){
         int id = tss.ajouterMission(new Mission("M1","D1"));
         assertNotNull(id);
-        l.info("mission added " + id);
+        l.debug("mission added " + id);
     }
 
     @Test
